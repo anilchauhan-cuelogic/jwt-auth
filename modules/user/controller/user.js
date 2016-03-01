@@ -15,5 +15,26 @@ module.exports = {
             reply(err);
         });
         
+    },
+
+    getUser: function(request, reply) {
+
+        User.findById(request.params.id)
+            .then(function(user){
+                reply(user);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    },
+
+    listUsers: function(request, reply) {
+        User.find()
+            .then(function(users){
+                reply(users);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
     }
 };

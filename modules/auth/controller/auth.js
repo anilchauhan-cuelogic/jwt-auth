@@ -1,32 +1,28 @@
-var User = require('../../../model/user').User;
+var User = require('../../../model/user').User,
+    userUtil = require('../../../utils/user'),
+    authUtil = require('../../../utils/auth');
 
 module.exports = {
 
     login: function (request, reply) {
 
-        // User.findOne({ email: _.trim(request.payload.email) }, function(err, user) {
+        userUtil.getUserByEmail(request.payload.email)
+            .then(function(user) {
 
-        //     if (err) throw err;
+                return user.comparePassword(request.payload.password);
+            })
+            .then(function(userDetails){
 
-        //     if(user){
+                userDetails.authToken = authUtil.createToken({'id' : userDetails._id, 'scope' : userDetails.scope});
+                
+                return userUtil.updateUserToken(userDetails);
 
-        //         user.comparePassword(_.trim(request.payload.password), function(err, isMatch) {
-
-        //             if (err) throw err; 
-
-        //             if(isMatch){
-
-        //                 var token = auth.createToken({'id' : user._id, 'scope' : user.scope});
-        //                 reply({'id':user._id, 'scope' : user.scope, 'token': token});
-                        
-        //             } else {
-        //                 reply("Invalid password");
-        //             }
-        //         });
-        //     } else {
-        //         return reply("User with this email does not exist");
-        //     }           
-        // });
-        
+            })
+            .then(function(userDetails){
+                reply(userDetails);
+            })
+            .catch(function(err){
+                reply(err);
+            });
     }
 };

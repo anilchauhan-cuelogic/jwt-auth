@@ -1,5 +1,5 @@
 var controller = require('./controller/auth'),
-    validator = require('../../validator/login');
+    validator = require('../../validator/auth');
 
 module.exports = [
     {

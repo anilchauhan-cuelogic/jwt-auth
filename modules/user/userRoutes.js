@@ -9,5 +9,20 @@ module.exports = [
             validate : validator.add,
             handler : controller.add
         }
+    },
+    {
+        method: 'GET',
+        path: '/user/{id}',
+        config: {
+            validate : validator.getUser,
+            handler : controller.getUser
+        }
+    },
+    {
+        method: 'GET',
+        path: '/users',
+        config: {
+            handler : controller.listUsers
+        }
     }
 ];

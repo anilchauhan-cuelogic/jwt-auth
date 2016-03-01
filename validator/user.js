@@ -1,4 +1,5 @@
-var joi = require("joi");
+var joi = require("joi"),
+    pattern = require("../utils/pattern");
 
 exports.add = {
     'payload' : {
@@ -9,5 +10,11 @@ exports.add = {
         'email' : joi.string().email().required(),
         'password' : joi.string().min(6).max(15).required(),
         'scope' : joi.array().required()
+    }
+};
+
+exports.getUser = {
+    params: {
+        id: joi.string().regex(pattern.isObjectId).required()
     }
 };
